@@ -7,32 +7,26 @@
           <label>First Name:</label>
           <input v-model="firstName" required />
         </div>
-
         <div class="form-group">
           <label>Last Name:</label>
           <input v-model="lastName" required />
         </div>
-
         <div class="form-group">
           <label>Email:</label>
           <input v-model="email" type="email" required />
         </div>
-
         <div class="form-group">
           <label>Birthday:</label>
           <input v-model="birthday" type="date" required />
         </div>
-
         <div class="form-group">
           <label>Phone Number:</label>
           <input v-model="phone" type="tel" required />
         </div>
-
         <div class="form-group full-width">
           <label>Address:</label>
           <input v-model="address" required />
         </div>
-
         <div class="button-container full-width">
           <button type="submit">Add Contact</button>
         </div>
@@ -65,15 +59,23 @@ export default {
         address: this.address.trim(),
       };
 
-      this.$emit('add-contact', newContact);
+      // Get existing contacts from localStorage or start empty
+      const contacts = JSON.parse(localStorage.getItem('contacts')) || [];
+      // Add new contact
+      contacts.push(newContact);
+      // Save back to localStorage
+      localStorage.setItem('contacts', JSON.stringify(contacts));
 
-      // Clear form
+      // Clear form fields
       this.firstName = '';
       this.lastName = '';
       this.email = '';
       this.birthday = '';
       this.phone = '';
       this.address = '';
+
+      // Navigate back to Home page
+      this.$router.push({ name: 'Home' });
     },
   },
 };
@@ -85,7 +87,6 @@ export default {
   display: flex;
   justify-content: center;
 }
-
 .form-container {
   background-color: #F8F8E1;
   padding: 2rem;
@@ -94,45 +95,37 @@ export default {
   max-width: 700px;
   width: 100%;
 }
-
 h2 {
   color: #FF90BB;
   text-align: center;
   margin-bottom: 2rem;
 }
-
 .form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
 }
-
 .form-group {
   display: flex;
   flex-direction: column;
 }
-
 label {
   font-weight: bold;
   margin-bottom: 0.5rem;
 }
-
 input {
   padding: 0.7rem;
   border-radius: 8px;
   border: 1px solid #ccc;
   font-size: 1rem;
 }
-
 .full-width {
   grid-column: 1 / -1;
 }
-
 .button-container {
   display: flex;
   justify-content: center;
 }
-
 button {
   background-color: #8ACCD5;
   color: white;
@@ -143,7 +136,6 @@ button {
   cursor: pointer;
   transition: background-color 0.3s;
 }
-
 button:hover {
   background-color: #6bbbc3;
 }
